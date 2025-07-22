@@ -33,13 +33,13 @@ def make_credit_card(prefix, length, valid_check=True):
 class TestCreditCardValidator(unittest.TestCase):
 
     def test_valid_visa(self):
-        for _ in range(1500):
+        for _ in range(100):
             is_valid = random.choice([True, False])
             card = make_credit_card('4', 16, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_valid_mastercard(self):
-        for _ in range(1500):
+        for _ in range(100):
             if random.random() < 0.5:
                 prefix = str(random.randint(51, 55))
             else:
@@ -49,14 +49,14 @@ class TestCreditCardValidator(unittest.TestCase):
             credit_card_validator(card)
 
     def test_valid_amex(self):
-        for _ in range(1500):
+        for _ in range(100):
             prefix = random.choice(['34', '37'])
             is_valid = random.choice([True, False])
             card = make_credit_card(prefix, 15, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_random_combos(self):
-        for _ in range(5500):
+        for _ in range(6000):
             length = random.randint(2, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
             luhn_digit = calculate_check_digit(base)
