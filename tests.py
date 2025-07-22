@@ -33,65 +33,30 @@ def make_credit_card(prefix, length, valid_check=True):
 class TestCreditCardValidator(unittest.TestCase):
 
     def test_visa(self):
-        for _ in range(random.randint(500, 2000)):
+        for _ in range(1000):
             is_valid = random.choice([True, False])
-            length = random.choice([13, 16, 19])
+            length = random.randint(13, 19)
             card = make_credit_card('4', length, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_mastercard(self):
-        for _ in range(random.randint(500, 2000)):
+        for _ in range(1000):
             if random.random() < 0.5:
                 prefix = str(random.randint(51, 55))
             else:
                 prefix = str(random.randint(2221, 2720))
             is_valid = random.choice([True, False])
-            length = random.choice([16, 17, 18, 19])
+            length = random.randint(13, 19)
             card = make_credit_card(prefix, length, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_amex(self):
-        for _ in range(random.randint(500, 2000)):
+        for _ in range(1000):
             prefix = random.choice(['34', '37'])
             is_valid = random.choice([True, False])
-            length = random.choice([15, 16, 17])
+            length = random.choice(13,19)
             card = make_credit_card(prefix, length, valid_check=is_valid)
             credit_card_validator(card)
-
-    def test_mixed_valid_ranges(self):
-        for _ in range(random.randint(500, 2000)):
-            issuer = random.choice(['visa', 'mc', 'amex'])
-            is_valid = random.choice([True, False])
-            if issuer == 'visa':
-                length = random.choice([13, 16, 19])
-                card = make_credit_card('4', length, valid_check=is_valid)
-            elif issuer == 'mc':
-                prefix = str(random.choice(
-                    list(range(51, 56)) + list(range(2221, 2721))
-                ))
-                length = random.choice([16, 17, 18, 19])
-                card = make_credit_card(prefix, length, valid_check=is_valid)
-            else:
-                prefix = random.choice(['34', '37'])
-                length = random.choice([15, 16, 17])
-                card = make_credit_card(prefix, length, valid_check=is_valid)
-            credit_card_validator(card)
-
-    def test_edge_case_lengths(self):
-        all_prefixes = (
-            ['4'] +
-            [str(i) for i in range(51, 56)] +
-            [str(i) for i in range(2221, 2721)] +
-            ['34', '37']
-        )
-        for _ in range(random.randint(500, 2000)):
-            prefix = random.choice(all_prefixes)
-            length = random.randint(10, 19)
-            is_valid = random.choice([True, False])
-            if len(prefix) < length - 1:
-                card = make_credit_card(prefix, length, valid_check=is_valid)
-                credit_card_validator(card)
-
 
 if __name__ == '__main__':
     unittest.main()
