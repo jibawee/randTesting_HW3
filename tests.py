@@ -56,7 +56,7 @@ class TestCreditCardValidator(unittest.TestCase):
             credit_card_validator(card)
 
     def test_random_combos(self):
-        for _ in range(2000):
+        for _ in range(5000):
             length = random.randint(0, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
             luhn_digit = calculate_check_digit(base)
