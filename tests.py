@@ -58,6 +58,17 @@ class TestCreditCardValidator(unittest.TestCase):
             card = make_credit_card(prefix, length, valid_check=is_valid)
             credit_card_validator(card)
 
+    def test_random_numeric(self):
+        for _ in range(1000):
+            length = random.randint(0, 19)
+            base = ''.join(random.choices('0123456789', k=length - 1))
+            luhn_digit = calculate_check_digit(base)
+            check_digit = luhn_digit if random.choice([True, False]) else random.choice(
+                [d for d in '0123456789' if d != luhn_digit]
+            )
+            card = base + check_digit
+            credit_card_validator(card)
+
 
 if __name__ == '__main__':
     unittest.main()
