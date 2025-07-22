@@ -33,14 +33,14 @@ def make_credit_card(prefix, length, valid_check=True):
 class TestCreditCardValidator(unittest.TestCase):
 
     def test_visa(self):
-        for _ in range(1000):
+        for _ in range(1500):
             is_valid = random.choice([True, False])
             length = random.randint(13, 19)
             card = make_credit_card('4', length, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_mastercard(self):
-        for _ in range(1000):
+        for _ in range(1500):
             if random.random() < 0.5:
                 prefix = str(random.randint(51, 55))
             else:
@@ -51,7 +51,7 @@ class TestCreditCardValidator(unittest.TestCase):
             credit_card_validator(card)
 
     def test_amex(self):
-        for _ in range(1000):
+        for _ in range(1500):
             prefix = random.choice(['34', '37'])
             is_valid = random.choice([True, False])
             length = random.randint(13, 19)
@@ -61,4 +61,3 @@ class TestCreditCardValidator(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    
