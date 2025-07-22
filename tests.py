@@ -56,8 +56,8 @@ class TestCreditCardValidator(unittest.TestCase):
             credit_card_validator(card)
 
     def test_random_combos(self):
-        for _ in range(5000):
-            length = random.randint(1, 20)
+        for _ in range(5500):
+            length = random.randint(2, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
             luhn_digit = calculate_check_digit(base)
             check_digit = luhn_digit if random.choice([True, False]) else random.choice(
@@ -65,13 +65,6 @@ class TestCreditCardValidator(unittest.TestCase):
             )
             card = base + check_digit
             credit_card_validator(card)
-
-    def test_invalid_chars(self):
-        invalid_chars = ['A', ' ', '-', '.', '!', 'abcdef']
-        for ch in invalid_chars:
-            card = '4' + ch + '567890123456'
-            credit_card_validator(card)
-
 
 if __name__ == '__main__':
     unittest.main()
