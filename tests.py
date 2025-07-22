@@ -16,7 +16,7 @@ def calculate_check_digit(number_without_check):
 
 
 def make_credit_card(prefix, length, valid_check=True):
-    num_random_digits = length - len(prefix) - 1
+    num_random_digits = int(length) - len(prefix) - 1
     middle = ''.join(random.choice('0123456789') for _ in range(num_random_digits))
     partial = prefix + middle
     correct_digit = calculate_check_digit(partial)
@@ -35,7 +35,7 @@ class TestCreditCardValidator(unittest.TestCase):
     def test_valid_visa(self):
         for _ in range(1500):
             is_valid = random.choice([True, False])
-            card = make_credit_card('4', '16', valid_check=is_valid)
+            card = make_credit_card('4', 16, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_valid_mastercard(self):
@@ -45,25 +45,31 @@ class TestCreditCardValidator(unittest.TestCase):
             else:
                 prefix = str(random.randint(2221, 2720))
             is_valid = random.choice([True, False])
-            card = make_credit_card(prefix, '16', valid_check=is_valid)
+            card = make_credit_card(prefix, 16, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_valid_amex(self):
         for _ in range(1500):
             prefix = random.choice(['34', '37'])
             is_valid = random.choice([True, False])
-            card = make_credit_card(prefix, '15', valid_check=is_valid)
+            card = make_credit_card(prefix, 15, valid_check=is_valid)
             credit_card_validator(card)
 
     def test_random_combos(self):
         for _ in range(5000):
-            length = random.randint(0, 20)
+            length = random.randint(1, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
             luhn_digit = calculate_check_digit(base)
             check_digit = luhn_digit if random.choice([True, False]) else random.choice(
                 [d for d in '0123456789' if d != luhn_digit]
             )
             card = base + check_digit
+            credit_card_validator(card)
+
+    def test_invalid_chars(self):
+        invalid_chars = ['A', ' ', '-', '.', '!', 'abcdef']
+        for ch in invalid_chars:
+            card = '4' + ch + '567890123456'
             credit_card_validator(card)
 
 
