@@ -54,9 +54,10 @@ class TestCreditCardValidator(unittest.TestCase):
         for _ in range(1000):
             prefix = random.choice(['34', '37'])
             is_valid = random.choice([True, False])
-            length = random.randint(13,19)
+            length = random.randint(13, 19)
             card = make_credit_card(prefix, length, valid_check=is_valid)
             credit_card_validator(card)
+
 
 if __name__ == '__main__':
     unittest.main()
