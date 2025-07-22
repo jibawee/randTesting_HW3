@@ -56,15 +56,23 @@ class TestCreditCardValidator(unittest.TestCase):
             credit_card_validator(card)
 
     def test_random_combos(self):
+        base = ''.join(random.choices('0123456789', k=9))
+        small_card = base + calculate_check_digit(base)
+        credit_card_validator(small_card)
+
+        base2 = ''.join(random.choices('0123456789', k=18))
+        big_card = base2 + calculate_check_digit(base2)
+        credit_card_validator(big_card)
+
         for _ in range(500):
             length = random.randint(2, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
-            luhn_digit = calculate_check_digit(base)
-            check_digit = luhn_digit if random.choice([True, False]) else random.choice(
-                [d for d in '0123456789' if d != luhn_digit]
+            luhn = calculate_check_digit(base)
+            check = luhn if random.choice([True, False]) else random.choice(
+                [d for d in '0123456789' if d != luhn]
             )
-            card = base + check_digit
-            credit_card_validator(card)
+            credit_card_validator(base + check)
+
 
 if __name__ == '__main__':
     unittest.main()
