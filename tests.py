@@ -3,9 +3,9 @@ import random
 from credit_card_validator import credit_card_validator
 
 
-def calculate_check_digit(number_without_check):
+def checkdigit(nocheck):
     total = 0
-    reverse_digits = list(map(int, number_without_check[::-1]))
+    reverse_digits = list(map(int, nocheck[::-1]))
     for index, digit in enumerate(reverse_digits):
         if index % 2 == 0:
             total += digit
@@ -17,9 +17,9 @@ def calculate_check_digit(number_without_check):
 
 def make_credit_card(prefix, length, valid_check=True):
     num_random_digits = int(length) - len(prefix) - 1
-    middle = ''.join(random.choice('0123456789') for _ in range(num_random_digits))
-    partial = prefix + middle
-    correct_digit = calculate_check_digit(partial)
+    base = ''.join(random.choice('0123456789') for _ in range(num_random_digits))
+    partial = prefix + base
+    correct_digit = checkdigit(partial)
 
     if valid_check:
         check_digit = correct_digit
@@ -37,7 +37,7 @@ class TestCreditCardValidator(unittest.TestCase):
             card = make_credit_card('4', 16, valid_check=is_valid)
             credit_card_validator(card)
 
-    def test_valid_mastercard(self):
+    def test_mastercard(self):
         for _ in range(20000):
             if random.random() < 0.5:
                 prefix = str(random.randint(50, 56))
@@ -56,17 +56,17 @@ class TestCreditCardValidator(unittest.TestCase):
 
     def test_random_combos(self):
         base = ''.join(random.choices('0123456789', k=9))
-        small_card = base + calculate_check_digit(base)
+        small_card = base + checkdigit(base)
         credit_card_validator(small_card)
 
         base2 = ''.join(random.choices('0123456789', k=18))
-        big_card = base2 + calculate_check_digit(base2)
+        big_card = base2 + checkdigit(base2)
         credit_card_validator(big_card)
 
         for _ in range(20000):
             length = random.randint(2, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
-            luhn = calculate_check_digit(base)
+            luhn = checkdigit(base)
             check = luhn if random.choice([True, False]) else random.choice(
                 [d for d in '0123456789' if d != luhn]
             )
