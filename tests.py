@@ -63,7 +63,7 @@ class TestCreditCardValidator(unittest.TestCase):
         big_card = base2 + calculate_check_digit(base2)
         credit_card_validator(big_card)
 
-        for _ in range(1000):
+        for _ in range(1500):
             length = random.randint(2, 20)
             base = ''.join(random.choices('0123456789', k=length - 1))
             luhn = calculate_check_digit(base)
